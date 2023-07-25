@@ -139,7 +139,7 @@ function app() {
     setInterval(() => {
         getUnits(ids);
         list.splice(0, list.length);
-    }, 15000);
+    }, 60000);
 
 
 }
