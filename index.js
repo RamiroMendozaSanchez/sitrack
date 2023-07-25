@@ -91,6 +91,7 @@ async function getUnitsJson() {
     const port = 3000;
     const nombreArchivo = 'datos.json';
     api.get('/unit', (req, res) => {
+        console.log("API");
 
         fs.readFile(nombreArchivo, 'utf8', (err, data) => {
             if (err) {
