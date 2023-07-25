@@ -45,7 +45,7 @@ async function getUnits(ids) {
             const response = await axios.get('https://hst-api.wialon.us/wialon/ajax.html?svc=core/search_item&params={"id":' + id + ',"flags":4611686018427387903}&sid=' + sid + '');
             //console.log(response);
             const datos = response.data;
-            console.log(datos.item)
+            //console.log(datos.item)
 
             const name = datos.item.nm;
             const imei = datos.item.uid;
@@ -90,7 +90,7 @@ async function getUnitsJson() {
     const api = express();
     const port = 3000;
     const nombreArchivo = 'datos.json';
-    api.get('sitrack.netlify.app/unit', (req, res) => {
+    api.get('/unit', (req, res) => {
 
         fs.readFile(nombreArchivo, 'utf8', (err, data) => {
             if (err) {
