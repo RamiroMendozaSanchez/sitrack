@@ -90,7 +90,7 @@ async function getUnitsJson() {
     const api = express();
     const port = 3000;
     const nombreArchivo = 'datos.json';
-    api.get('.netlify.app/unit', (req, res) => {
+    api.get('sitrack.netlify.app/unit', (req, res) => {
 
         fs.readFile(nombreArchivo, 'utf8', (err, data) => {
             if (err) {
