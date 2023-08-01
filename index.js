@@ -1,7 +1,8 @@
 const axios = require('axios');
 const fs = require('fs');
 const express = require('express');
-const { log } = require('console');
+const {MongoClient} = require('mongodb');
+const units = require('./router/units');
 
 var ids = [];
 var listIds = [];
@@ -9,6 +10,7 @@ var list = [];
 const statusSendInfo = '';
 const baseUrl = 'https://hst-api.wialon.us/wialon/ajax.html';
 const token = 'a3bb803c27770ea3a0082be2b77c328eE86E433926A9FF64D7223EFB32D698699962043D';
+const urlBD = 'mongodb://0.0.0.0:27017/';
 
 async function getsid() {
     try {
@@ -166,15 +168,12 @@ async function getUnits() {
             console.log(dataSitrack);
             console.log(`Envio a api de sitrack ${dataSitrack.imei_no}`);
             
-            // axios.post(apiSitrackUrl, dataSitrack)
-            // .then(response => {
-            //    console.log('Respuesta del servidor', response.data);
-            // }).catch(error => {
-            //    console.log('Error al hacer la solicitud:', error.message);
-            // });
-
-            list.push(data);
-
+            axios.post(apiSitrackUrl, dataSitrack)
+            .then(response => {
+               console.log('Respuesta del servidor', response.data);
+            }).catch(error => {
+               console.log('Error al hacer la solicitud:', error.message);
+            });
             //createJson(name,utc,latitud,longitud,velocidad,id);
         } catch (error) {
             //console.error(error);
@@ -186,35 +185,16 @@ async function getUnits() {
 //function readUnitsJson() {
 
 //}
-
 async function getUnitsJson() {
     const api = express();
     const port = 3000;
-    const nombreArchivo = 'datos.json';
-    api.get('/unit', (req, res) => {
-        console.log("API");
-
-        fs.readFile(nombreArchivo, 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error al leer el archivo:', err);
-            } else {
-                try {
-                    const datosJSON = JSON.parse(data);
-                    console.log('Contenido del archivo JSON:');
-                    res.json(datosJSON);
-                    return datosJSON;
-                } catch (error) {
-                    console.error('Error al analizar el contenido JSON:', error);
-                }
-            }
-        });
-    });
+    api.use('/',units);
     api.listen(port, () => {
         console.log(`servidor en funcion en http://127.0.0.1:${port}`);
     })
 }
 
-function createJson(list) {
+async function createJson(list) {
 
     // Convertir el array en formato JSON
     const jsonData = JSON.stringify(list);
@@ -230,8 +210,6 @@ function createJson(list) {
 
     //console.log(list);
 }
-
-
 
 function app() {
     Groups();
