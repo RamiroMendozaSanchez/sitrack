@@ -174,6 +174,9 @@ async function getUnits() {
             }).catch(error => {
                console.log('Error al hacer la solicitud:', error.message);
             });
+
+            list.push(data);
+
             //createJson(name,utc,latitud,longitud,velocidad,id);
         } catch (error) {
             //console.error(error);
@@ -209,7 +212,10 @@ async function createJson(list) {
     });
 
     //console.log(list);
+
 }
+
+
 
 function app() {
     Groups();
