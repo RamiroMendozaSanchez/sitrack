@@ -3,6 +3,8 @@ const fs = require('fs');
 const express = require('express');
 const {MongoClient} = require('mongodb');
 const units = require('./router/units');
+const server = require('./router/serverInfo');
+const os = require('os')
 
 var ids = [];
 var listIds = [];
@@ -127,7 +129,7 @@ async function getUnits() {
             const utc = datos.item.pos.t;
 
             const timeObj = new Date(utc * 1000);
-            const timeUTC = timeObj.toISOString();
+            const timeUTC = (timeObj.toISOString()).replace(/[TZ]/g, '');
 
             const latitud = datos.item.pos.y;
             const longitud = datos.item.pos.x;
@@ -155,7 +157,7 @@ async function getUnits() {
             
             const dataSitrack = {
                 imei_no: imei.toString(),
-                latitude: latitud.toString(),
+                lattitude: latitud.toString(),
                 longitude: longitud.toString(),
                 angle: angle.toString(),
                 speed: velocidad.toString(),
@@ -192,6 +194,7 @@ async function getUnitsJson() {
     const api = express();
     const port = 3000;
     api.use('/',units);
+    api.use('/server', server)
     api.listen(port, () => {
         console.log(`servidor en funcion en http://127.0.0.1:${port}`);
     })
@@ -212,10 +215,7 @@ async function createJson(list) {
     });
 
     //console.log(list);
-
 }
-
-
 
 function app() {
     Groups();
